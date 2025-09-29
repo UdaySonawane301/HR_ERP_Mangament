@@ -16,7 +16,7 @@ con = MySQL(app)
 def welcome():
     return render_template('home.html')
 
-@app.route('/home',methods=["GET","POST"])
+@app.route('/home',methods=["POST"])
 def home():
 
     username = request.form['username']
@@ -144,5 +144,6 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
