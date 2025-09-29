@@ -58,7 +58,7 @@ def save():
 
     return render_template('add_emp_success.html')
 
-@app.route('/show_emp')
+@app.route('/show_emp',methods=['GET'])
 def show_emp():
 
     cur = con.connection.cursor()
@@ -144,3 +144,4 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
