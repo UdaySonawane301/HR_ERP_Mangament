@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | HR Recruitment</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9); /* lighter for better contrast */
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            width: 350px;
+            animation: slideIn 1s ease-out;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 16px;
+            color: #333; /* dark text */
+            background: #fff; /* solid background */
+        }
+
+        .login-container input::placeholder {
+            color: #aaa; /* lighter placeholder */
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            background: #ff7eb3;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-container button:hover {
+            background: #ff5277;
+            transform: translateY(-2px);
+        }
+
+        .login-container .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .login-container .footer-text a {
+            color: #ff5277;
+            text-decoration: none;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>HR Recruitment Login</h2>
+        <form action="/home" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+       
+    </div>
+</body>
+</html>

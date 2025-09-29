@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add New Employee</title>
+        {% include "header.html" %}
+    </head>
+    <body>
+   <style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120vh; /* full screen */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+  }
+
+
+
+  #add-employee-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    width: 400px;  /* increase form width */
+  }
+
+  #add-employee-form label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+
+  #add-employee-form input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  #add-employee-form button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: #007bff;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  #add-employee-form button:hover {
+    background: #0056b3;
+  }
+</style>
+
+<!-- Add Employee Form -->
+<form id="add-employee-form" action="/update" method="POST" >
+  <h2 style="text-align:center; margin-bottom:20px;">View Employee</h2>
+  
+
+    {% for i in li %} 
+  <label for="emp-id">Employee ID</label>
+  <input type="text" name="emp_id" value="{{i[0]}}" placeholder="e.g. EMP001" required>
+
+  <label for="emp-name">Full Name</label>
+  <input type="text" name="name" value="{{i[1]}}" placeholder="e.g. Priya Sharma" required>
+
+  <label for="emp-email">Email</label>
+  <input type="email"  name="email" value="{{i[2]}}" placeholder="e.g. priya@example.com" required>
+
+  <label for="emp-dept">Department</label>
+  <input type="text"  name="department" value="{{i[3]}}" placeholder="e.g. HR, Sales">
+
+  <label for="emp-phone">Phone</label>
+  <input type="tel"  name="phone" value="{{i[4]}}" placeholder="e.g. +91-9876543210">
+
+
+  <input type="submit" name="" class="btn" value="Update">
+
+  <a href="/delete?id={{i[0]}}" class="btn" >Delete</a>
+  
+      {% endfor %}
+</form>
+
+
+
+    </body>
+</html>

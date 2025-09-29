@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    {% include "header.html" %}
+  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            background: #333;
+            color: white;
+            padding: 15px;
+        }
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #444;
+            color: white;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Seacher Employee List</h1>
+    <table>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Email</th>
+            <th>Edit</th>
+           
+        </tr>
+
+        {% for n in record %}
+        <tr>
+            <td>{{n[0]}}</td>
+            <td>{{n[1]}}</td>
+            <td>{{n[2]}}</td>
+            <td>{{n[3]}}</td>
+            <td><a href="/emp_profile?eid={{ n[0] }}" class="btn">Edit</a></td>
+        </tr>
+        {% endfor %}
+       
+    </table>
+</body>
+</html>

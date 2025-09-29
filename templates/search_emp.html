@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "header.html" %}
+    <style>
+        .form-container {
+            margin-top: 200px; /* pushes form 50px below header */
+            text-align: center; /* optional: center align */
+        }
+        input {
+            margin: 5px; /* small gap between fields */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <form action="/search_list" method="POST"> 
+            Emp Name <br><input type="text" name="emp_n" value="">
+            <br>
+            <input type="submit" class="btn" value="Search">
+        </form>
+    </div>
+
+</body>
+</html>

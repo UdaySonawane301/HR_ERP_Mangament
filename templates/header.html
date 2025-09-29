@@ -1,0 +1,33 @@
+<!-- Header + Sidebar with CSS link -->
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<header>
+    <div class="menu-btn" id="menu-btn">☰</div>
+    <div class="title">HR Recruitment</div>
+   
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <ul>
+            <li><a href="/home"> Home </a></li>
+            <li><a href="/add_emp"> Add Employee </a></li>
+            <li><a href="/show_emp"> Show Employee</a></li>
+            <li><a href="/search"> Search Employee </a></li>
+            <li><a href="logout.html" class="logout"> Logout </a></li>
+    </ul>
+</aside>
+
+<script>
+    const menuBtn = document.getElementById("menu-btn");
+    const sidebar = document.getElementById("sidebar");
+    const content = document.getElementById("content");
+
+    menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        if (content) {
+            content.classList.toggle("shift");
+        }
+    });
+</script>
