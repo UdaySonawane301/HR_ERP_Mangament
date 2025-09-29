@@ -1,0 +1,131 @@
+/* Reset */
+body, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+header {
+    background-color: #0073e6;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Left menu button */
+.menu-btn {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Center title */
+.title {
+    flex: 1;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Right user info */
+.user-info {
+    font-size: 16px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: #222;
+    color: white;
+    position: fixed;
+    top: 60px; /* below header */
+    left: 0;
+    height: 100%;
+    padding-top: 20px;
+    transition: 0.3s;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 12px 20px;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: #444;
+}
+
+.logout {
+    background: #e74c3c;
+    border-radius: 5px;
+}
+
+.logout:hover {
+    background: #c0392b;
+}
+
+/* Sidebar collapsed */
+.sidebar.active {
+    left: -220px;
+}
+
+/* Main Content */
+.content {
+    margin-left: 220px;
+    padding: 80px 40px;
+    transition: 0.3s;
+}
+
+.content.shift {
+    margin-left: 0;
+}
+
+.content h1 {
+    color: #333;
+    font-size: 36px;
+}
+
+.content p {
+    font-size: 18px;
+    color: #555;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: white;
+    background-color: #0073e6;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #005bb5;
+}
