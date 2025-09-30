@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# ---------------------- ROUTES ----------------------
+
 
 @app.route('/')
 def welcome():
@@ -110,6 +110,7 @@ def search_list():
 # ---------------------- MAIN ----------------------
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
