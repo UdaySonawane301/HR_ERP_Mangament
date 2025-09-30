@@ -1,33 +1,31 @@
-from flask import Flask, render_template,request
-from flask_mysqldb import MySQL
-
+from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 
 app = Flask(__name__)
+app.secret_key = 'india'
 
-app.secret_key ='india'
-app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']='uday'
-app.config['MYSQL_DB']='hr_erp_db'
+# Use PostgreSQL (Render connection string)
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://hr_erp_db_8xas_user:21KI8UbPkKhjHzbRniqlegAlF37pU6JH@dpg-d3dug9umcj7s73cu4s10-a/hr_erp_db_8xas"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-con = MySQL(app)
+db = SQLAlchemy(app)
+
+# ---------------------- ROUTES ----------------------
 
 @app.route('/')
 def welcome():
     return render_template('home.html')
 
-@app.route('/home',methods=["POST"])
+@app.route('/home', methods=["POST"])
 def home():
-
     username = request.form['username']
     password = request.form['password']
 
-    if username=="uday" and password=="123":
+    if username == "uday" and password == "123":
         return render_template('home.html')
     else:
         return "ERROR"
-
-   
 
 @app.route('/login')
 def login():
@@ -45,45 +43,32 @@ def save():
     department = request.form['department']
     phone = request.form['phone']
     
-    cur = con.connection.cursor()
-
-    cur.execute(
-        'INSERT INTO registration(empid, empname, email, department, phoneno) VALUES (%s, %s, %s, %s, %s)',
-        (emp_id, name, email, department, phone)
-    )
-
-    con.connection.commit()
-    
-    cur.close()
+    sql = text('INSERT INTO registration (empid, empname, email, department, phoneno) VALUES (:empid, :empname, :email, :department, :phoneno)')
+    db.session.execute(sql, {
+        'empid': emp_id,
+        'empname': name,
+        'email': email,
+        'department': department,
+        'phoneno': phone
+    })
+    db.session.commit()
 
     return render_template('add_emp_success.html')
 
-@app.route('/show_emp',methods=['GET'])
+@app.route('/show_emp', methods=['GET'])
 def show_emp():
-
-    cur = con.connection.cursor()
-
-    cur.execute(
-        'select empid, empname, department, email from registration'
-    )
-    
-    emp_list = cur.fetchall()
-    return render_template("show_emp.html",record=emp_list)
-
+    sql = text('SELECT empid, empname, department, email FROM registration')
+    emp_list = db.session.execute(sql).fetchall()
+    return render_template("show_emp.html", record=emp_list)
 
 @app.route('/emp_profile')
 def emp_profile():
-    id=request.args.get('eid')
+    emp_id = request.args.get('eid')
+    sql = text('SELECT * FROM registration WHERE empid = :empid')
+    emp_list = db.session.execute(sql, {'empid': emp_id}).fetchall()
+    return render_template("emp_profile.html", li=emp_list)
 
-    cur = con.connection.cursor()
-
-    cur.execute(
-        'select * from registration where empid= '+id
-    )
-    emp_list = cur.fetchall()
-    return render_template("emp_profile.html",li=emp_list)
-
-@app.route('/update',methods=['GET','POST'])
+@app.route('/update', methods=['POST'])
 def update():
     emp_id = request.form['emp_id']
     name = request.form['name']
@@ -91,59 +76,37 @@ def update():
     department = request.form['department']
     phone = request.form['phone']
 
-    cur = con.connection.cursor()
-
-    cur.execute(
-        'update registration set empname=%s, email=%s, department=%s, phoneno=%s where empid=%s',(name,email,department,phone,emp_id)
-    )
-
-    con.connection.commit()
-    
-    cur.close()
+    sql = text('UPDATE registration SET empname = :empname, email = :email, department = :department, phoneno = :phoneno WHERE empid = :empid')
+    db.session.execute(sql, {
+        'empname': name,
+        'email': email,
+        'department': department,
+        'phoneno': phone,
+        'empid': emp_id
+    })
+    db.session.commit()
 
     return render_template('update.html')
 
-
 @app.route('/delete')
 def delete():
-
-    emp_id=request.args.get('id')
-
-    cur = con.connection.cursor()
-
-    cur.execute(
-        'delete from registration where empid='+emp_id
-    )
-
-    con.connection.commit()
-    
-    cur.close()
-
+    emp_id = request.args.get('id')
+    sql = text('DELETE FROM registration WHERE empid = :empid')
+    db.session.execute(sql, {'empid': emp_id})
+    db.session.commit()
     return render_template("delete.html")
 
 @app.route('/search')
 def search():
-
     return render_template('search_emp.html')
 
-@app.route('/search_list',methods=['POST'])
+@app.route('/search_list', methods=['POST'])
 def search_list():
+    name = request.form['emp_n']
+    sql = text("SELECT * FROM registration WHERE empname ILIKE :empname")
+    emp_list = db.session.execute(sql, {'empname': name + '%'}).fetchall()
+    return render_template('seacher_emp_list.html', record=emp_list)
 
-    name=request.form['emp_n']
-
-    cur = con.connection.cursor()
-
-    cur.execute(
-        "select * from registration where empname like '"+name+"%'"  )
-    emp_list = cur.fetchall()
-    
-    cur.close()
-  
-    return render_template('seacher_emp_list.html',record=emp_list)
-
-
+# ---------------------- MAIN ----------------------
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
