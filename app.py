@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 app = Flask(__name__)
-app.secret_key = 'india'
+app.secret_key ='india'
 
 # Use PostgreSQL (Render connection string)
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://hr_erp_db_8xas_user:21KI8UbPkKhjHzbRniqlegAlF37pU6JH@dpg-d3dug9umcj7s73cu4s10-a/hr_erp_db_8xas"
@@ -110,3 +110,4 @@ def search_list():
 # ---------------------- MAIN ----------------------
 if __name__ == '__main__':
     app.run(debug=True)
+
