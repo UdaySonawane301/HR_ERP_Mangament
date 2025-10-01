@@ -1,47 +1,24 @@
 from flask import Flask, render_template, request
-import sqlite3  # Changed from psycopg2
+import psycopg2
 
 app = Flask(__name__)
 app.secret_key = 'india'
 
 # ---------------------------
-# SQLite Connection to local SQL file
+# PostgreSQL Connection
 # ---------------------------
 def get_connection():
-    # This file will store your database
-    return sqlite3.connect("hr_erp_db.sqlite3")
-
-# Optional: ensure rows return as dictionaries for templates
-def get_dict_connection():
-    con = sqlite3.connect("hr_erp_db.sqlite3")
-    con.row_factory = sqlite3.Row
-    return con
-
-# ---------------------------
-# Create table if not exists
-# ---------------------------
-con = get_connection()
-cur = con.cursor()
-cur.execute("""
-CREATE TABLE IF NOT EXISTS registration (
-    empid TEXT PRIMARY KEY,
-    empname TEXT,
-    email TEXT,
-    department TEXT,
-    phoneno TEXT
-)
-""")
-con.commit()
-cur.close()
-con.close()
-
-# ---------------------------
-# Routes (same as your original)
-# ---------------------------
+    return psycopg2.connect(
+        host="dpg-d3elv43uibrs73cc7830-a.singapore-postgres.render.com",   
+        database="crud_dashboard_db",          # your db name
+        user="crud_dashboard_db_user",
+        password="myTECBRRyf6VUadvVxAmYvQTy7oqyuvM",
+        port="5432"
+     )
 
 @app.route('/')
 def welcome():
-    return render_template('welcome.html')
+    return render_template('home.html')
 
 
 @app.route('/home', methods=["POST"])
@@ -75,11 +52,12 @@ def save():
 
     con = get_connection()
     cur = con.cursor()
-    # SQLite uses ? instead of %s
+
     cur.execute(
-        'INSERT INTO registration(empid, empname, email, department, phoneno) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO registration(empid, empname, email, department, phoneno) VALUES (%s, %s, %s, %s, %s)',
         (emp_id, name, email, department, phone)
     )
+
     con.commit()
     cur.close()
     con.close()
@@ -91,7 +69,7 @@ def save():
 def show_emp():
     con = get_connection()
     cur = con.cursor()
-    cur.execute('SELECT empid, empname, department, email FROM registration')
+    cur.execute('select empid, empname, department, email from registration')
     emp_list = cur.fetchall()
     cur.close()
     con.close()
@@ -103,7 +81,7 @@ def emp_profile():
     emp_id = request.args.get('eid')
     con = get_connection()
     cur = con.cursor()
-    cur.execute('SELECT * FROM registration WHERE empid=?', (emp_id,))
+    cur.execute('select * from registration where empid=%s', (emp_id,))
     emp_list = cur.fetchall()
     cur.close()
     con.close()
@@ -121,7 +99,7 @@ def update():
     con = get_connection()
     cur = con.cursor()
     cur.execute(
-        'UPDATE registration SET empname=?, email=?, department=?, phoneno=? WHERE empid=?',
+        'update registration set empname=%s, email=%s, department=%s, phoneno=%s where empid=%s',
         (name, email, department, phone, emp_id)
     )
     con.commit()
@@ -136,7 +114,7 @@ def delete():
     emp_id = request.args.get('id')
     con = get_connection()
     cur = con.cursor()
-    cur.execute('DELETE FROM registration WHERE empid=?', (emp_id,))
+    cur.execute('delete from registration where empid=%s', (emp_id,))
     con.commit()
     cur.close()
     con.close()
@@ -153,7 +131,7 @@ def search_list():
     name = request.form['emp_n']
     con = get_connection()
     cur = con.cursor()
-    cur.execute("SELECT * FROM registration WHERE empname LIKE ?", (name + '%',))
+    cur.execute("select * from registration where empname like %s", (name + '%',))
     emp_list = cur.fetchall()
     cur.close()
     con.close()
@@ -162,4 +140,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
 
