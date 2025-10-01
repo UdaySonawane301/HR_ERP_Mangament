@@ -21,15 +21,17 @@ def welcome():
     return render_template('welcome.html')
 
 
-@app.route('/home', methods=["POST"])
+@app.route('/home', methods=["GET","POST"])
 def home():
-    username = request.form['username']
-    password = request.form['password']
 
-    if username == "uday" and password == "123":
-        return render_template('home.html')
-    else:
-        return "ERROR"
+    if request.method=='POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == "uday" and password == "123":
+            return render_template('home.html')
+        else:
+            return "ERROR"
 
 
 @app.route('/login')
@@ -140,6 +142,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
