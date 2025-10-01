@@ -18,7 +18,7 @@ def get_connection():
 
 @app.route('/')
 def welcome():
-    return render_template('home.html')
+    return render_template('welcome.html')
 
 
 @app.route('/home', methods=["POST"])
@@ -140,6 +140,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
