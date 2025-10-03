@@ -63,8 +63,6 @@ def regi_emp():
         
         return render_template('login.html')
 
-    
-    return render_template('registration.html')
 
 
 @app.route('/login')
@@ -175,6 +173,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
