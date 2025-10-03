@@ -54,7 +54,7 @@ def regi_emp():
 
         cur = con.connection.cursor()
         cur.execute(
-            'INSERT INTO regi_info(username, password) VALUES (%s, %s)',
+            'INSERT INTO regi_info(username, pin) VALUES (%s, %s)',
             (name, passwo)
         )
         con.connection.commit()
@@ -175,6 +175,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
