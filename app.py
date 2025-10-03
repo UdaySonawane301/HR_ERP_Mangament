@@ -21,17 +21,50 @@ def welcome():
     return render_template('welcome.html')
 
 
-@app.route('/home', methods=["GET","POST"])
+@app.route('/home', methods=["GET", "POST"])
 def home():
+    if request.method == 'POST':
+        username = request.form['username']   
+        password = request.form['password']   
+        flag = 0
 
-    if request.method=='POST':
-        username = request.form['username']
-        password = request.form['password']
+        cur = con.connection.cursor()
+        cur.execute('SELECT * FROM regi_info')
+        emp_list = cur.fetchall()
 
-        if username == "uday" and password == "123":
-            return render_template('home.html')
+        for i in emp_list:
+            if i[0] == username and i[1] == password:
+                flag = 1
+                break
+        
+        if flag == 1:
+            return render_template("das.html")
         else:
-            return "ERROR"
+            return "<h2>Username And Password Is Invalid</h2>"
+
+@app.route('/add')
+def add():
+    return render_template('registration.html')
+
+@app.route('/regi_emp', methods=['GET', 'POST'])
+def regi_emp():
+    if request.method == 'POST':
+        name = request.form['Username']
+        passwo = request.form['Password']
+
+        cur = con.connection.cursor()
+        cur.execute(
+            'INSERT INTO regi_info(username, password) VALUES (%s, %s)',
+            (name, passwo)
+        )
+        con.connection.commit()
+        cur.close()
+
+        
+        return render_template('login.html')
+
+    
+    return render_template('registration.html')
 
 
 @app.route('/login')
@@ -142,6 +175,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
