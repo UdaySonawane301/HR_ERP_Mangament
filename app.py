@@ -55,19 +55,34 @@ def regi_emp():
     if request.method == 'POST':
         name = request.form['Username']
         passwo = request.form['Password']
-        
+        flag=0
+
         con = get_connection()
         cur = con.cursor()
-        cur.execute(
-            'INSERT INTO regi_info(username, pin) VALUES (%s, %s)',
-            (name, passwo)
-        )
-        con.commit()
+        cur.execute('SELECT * FROM regi_info')
+        emp_list = cur.fetchall()
         cur.close()
         con.close()
 
+        for i in emp_list:
+            if i[0] == name:
+                flag =1
+
+        if flag==0:
+            con = get_connection()
+            cur = con.cursor()
+            cur.execute(
+                'INSERT INTO regi_info(username, pin) VALUES (%s, %s)',
+                (name, passwo)
+            )
+            con.commit()
+            cur.close()
+            con.close()
+
         
-        return render_template('login.html')
+            return render_template('login.html')
+        else:
+            return "<h2> Username Already Exsit </h2>"
 
 
 
@@ -179,6 +194,7 @@ def search_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
